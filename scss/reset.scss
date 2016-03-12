@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+// import scss
+@import "mixins";
+
+/* === reset === */
+body,div,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,select,textarea,a,button{
+	@include reset-box-model;
+}
+// html5 tag reset
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{
+	display:block;
+	@include reset-box-model;
+}
+body,input,select,textarea,button,table{
+	font:{
+		size:12px;
+		family:'돋움',dotum,applegothic,sans-serif;
+	}
+}
+ul,ol{list-style:none}
+em,address{font-style:normal}
+a{
+	text-decoration:none;
+	&:hover{
+		text-decoration:underline;
+	}
+}
+caption,legend,hr{display:none;}
+table,th,td{
+	@include reset-table;
+}
+@include set-chk-rdo;

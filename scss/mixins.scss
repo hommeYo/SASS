@@ -1,0 +1,287 @@
+@charset "utf-8";
+
+// reset
+@mixin reset-box-model{
+	margin:0;
+	padding:0;
+	border:0;
+}
+@mixin reset-table{
+	width:100%;
+	table-layout:fixed;
+	border:0;
+	border-spacing:0;
+	border-collapse:collapse;
+}
+// :after box setting
+@mixin after{
+	&:after{
+		display:block;
+		clear:both;
+		content:'';
+	}
+}
+
+// checkbox/radio and lable vertical-align setting
+@mixin set-chk-rdo{
+	input[type="checkbox"], input[type="radio"]{
+		width:13px;
+		height:13px;
+		vertical-align:text-top;
+	}
+	label{
+		vertical-align:-1px;
+		& input[type="checkbox"], input[type="radio"]{margin-top:-1px;}
+	}
+}
+// property type selectors
+@mixin ip-txt{
+	input[type="text"]{
+		@content;
+	}
+}
+@mixin ip-pw{
+	input[type="password"]{
+		@content;
+	}
+}
+@mixin ip-txt-pw{
+	input[type="text"], input[type="password"]{
+		@content;
+	}
+}
+@mixin ip-chk{
+	input[type="checkbox"]{
+		@content;
+	}
+}
+@mixin ip-rdo{
+	input[type="radio"]{
+		@content;
+	}
+}
+@mixin ip-chk-rdo{
+	input[type="checkbox"], input[type="radio"]{
+		@content;
+	}
+}
+@mixin ip-img{
+	input[type="image"]{
+		@content;
+	}
+}
+@mixin btn-btn{
+	button[type="button"]{
+		@content;
+	}
+}
+
+// class name selectors
+@mixin class-start($class-name){
+	[class^="#{$class-name}"]{
+		@content;
+	}
+}
+@mixin class-end($class-name){
+	[class$="#{$class-name}"]{
+		@content;
+	}
+}
+
+// ie hack
+@mixin ie7{
+	*+html &{
+		@content;
+	}
+}
+@mixin ie7-inline-block{
+	*+html &{
+		display:inline;
+		zoom:1;
+		@content;
+	}
+}
+@mixin ie8{
+	@media \0screen{
+		&{
+			@content;
+		}
+	}
+}
+@mixin ie9($property, $value){
+	:root &{
+		#{$property}:#{$value} \0/IE9;
+	}
+}
+// ie scroll
+@mixin ie-scroll($face, $track, $arrow, $highlight, $dlight, $shadow, $darkshadow){
+	scrollbar-face-color:$face;
+	scrollbar-track-color:$track;
+	scrollbar-arrow-color:$arrow;
+	scrollbar-highlight-color:$highlight; // top,left in border
+	scrollbar-3dlight-color:$dlight; // top, left out border
+	scrollbar-shadow-color:$shadow; // right, bottom in border
+	scrollbar-darkshadow-color:$darkshadow; // right, bottom out border
+}
+
+// opacity
+@mixin opacity($value:0.2){
+	opacity:$value;
+	filter:alpha(opacity=$value*100); // ie opacity
+}
+
+// text mixins
+@mixin blind{
+	visibility:hidden;
+	overflow:hidden;
+	position:absolute;
+	width:0;
+	height:0;
+	font-size:0;
+	line-height:0;
+}
+@mixin hover-line{
+	&:hover{text-decoration:underline;}
+}
+@mixin txt-hide-block{
+	display:block;
+	font:0/0 sans-serif;
+	text-indent:-999em;
+}
+@mixin txt-hide-inlineblock($width, $height, $valign:middle){
+	display:inline-block;
+	overflow:hidden;
+	width:#{$width}px;
+	height:#{$height}px;
+	line-height:100em;
+	vertical-align:$valign;
+}
+@mixin ellipsis($width:100%){
+	overflow:hidden;
+	width:$width;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+
+// posiiton absolute
+@mixin absolute-all($top:0, $right:0, $bottom:0, $left:0){
+	position:absolute;
+	top:$top;
+	right:$right;
+	bottom:$bottom;
+	left:$left;
+}
+@mixin absolute-tl($top:0, $left:0){
+	position:absolute;
+	top:$top;
+	left:$left;
+}
+@mixin absolute-tr($top:0, $right:0){
+	position:absolute;
+	top:$top;
+	right:$right;
+}
+@mixin absolute-rb($right:0, $bottom:0){
+	position:absolute;
+	right:$right;
+	bottom:$bottom;
+}
+@mixin absolute-bl($bottom:0, $left:0){
+	position:absolute;
+	bottom:$bottom;
+	left:$left;
+}
+
+// background image
+@mixin background($name, $position:0 0, $repeat:no-repeat, $type:png, $path:"../img"){
+	background:url(#{$path}/#{$name}.#{$type}) #{$repeat} #{$position};
+}
+
+// vendorize
+@mixin vendorize($property, $value){
+	-webkit-#{$property}: $value;
+	-moz-#{$property}: $value;
+	-ms-#{$property}: $value;
+	-o-#{$property}: $value;
+	#{$property}: $value;
+}
+
+// class numberling css style
+@mixin class-property($col, $property, $value){
+	#{$col}{
+		#{$property}:#{$value};
+	}
+}
+@mixin class-num-property($class-name, $property, $values...){
+	$n: 1;
+	$var: "." + $class-name + $n;
+	@each $value in $values{
+		@include class-property($var, $property, $value);
+		$n: $n + 1;
+		$var: "." + $class-name + $n;
+	}
+}
+
+@mixin class-property2($col, $property, $property2, $value, $value2){
+	#{$col}{
+		#{$property}:#{$value};
+		#{$property2}:#{$value2};
+	}
+}
+@mixin class-num-property2($class-name, $property, $property2, $values...){
+	$n: 1;
+	$var: "." + $class-name + $n;
+	@each $value, $value2 in $values{
+		@include class-property2($var, $property, $property2, $value, $value2);
+		$n: $n + 1;
+		$var: "." + $class-name + $n;
+	}
+}
+
+@mixin class-bg($col, $value){
+	#{$col}{
+		background-position:#{$value};
+	}
+}
+@mixin class-num-bg($class-name, $values...){
+	$n: 1;
+	$var: "." + $class-name + $n;
+	@each $value in $values{
+		@include class-bg($var, $value);
+		$n: $n + 1;
+		$var: "." + $class-name + $n;
+	}
+}
+
+@mixin class-property-bg($col, $property, $value, $x, $y){
+	#{$col}{
+		#{$property}:#{$value};
+		background-position:#{$x} #{$y};
+	}
+}
+@mixin class-num-property-bg($class-name, $property, $values...){
+	$n: 1;
+	$var: "." + $class-name + $n;
+	@each $value, $x, $y in $values{
+		@include class-property-bg($var, $property, $value, $x, $y);
+		$n: $n + 1;
+		$var: "." + $class-name + $n;
+	}
+}
+
+@mixin class-property2-bg($col, $property, $property2, $value, $value2, $x, $y){
+	#{$col}{
+		#{$property}:#{$value};
+		#{$property2}:#{$value2};
+		background-position:#{$x} #{$y};
+	}
+}
+@mixin class-num-property2-bg($class-name, $property, $property2, $values...){
+	$n: 1;
+	$var: "." + $class-name + $n;
+	@each $value, $value2, $x, $y in $values{
+		@include class-property2-bg($var, $property, $property2, $value, $value2, $x, $y);
+		$n: $n + 1;
+		$var: "." + $class-name + $n;
+	}
+}
